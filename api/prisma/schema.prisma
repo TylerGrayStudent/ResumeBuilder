@@ -7,7 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model notes {
+model note {
   title     String
   text      String
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
@@ -15,25 +15,24 @@ model notes {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   userId    String
-  users     users?   @relation(fields: [usersId], references: [id])
+  user      user?    @relation(fields: [usersId], references: [id])
   usersId   String?  @db.Uuid
 }
 
-model users {
-  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  email         String       @unique
-  password      String
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  notes         notes[]
-  userDetails   userDetails?
-  userDetailsId String?      @db.Uuid
+model user {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email       String       @unique
+  password    String
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  notes       note[]
+  userDetails userDetails?
 }
 
 model userDetails {
   id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   firstName String
   lastName  String
-  users     users  @relation(fields: [usersId], references: [id])
-  usersId   String @unique @db.Uuid
+  user      user   @relation(fields: [userId], references: [id])
+  userId    String @unique @db.Uuid
 }

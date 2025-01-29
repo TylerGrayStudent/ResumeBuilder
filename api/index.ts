@@ -5,6 +5,7 @@ import { setupSwagger } from "./swagger";
 import userRoutes from "./users/routes";
 
 const app = express();
+const port = process.env.PORT || 4000;
 
 // Middleware to parse JSON bodies
 app.use(express.json());
@@ -19,6 +20,7 @@ app.use("/users", userRoutes);
 // Swagger
 setupSwagger(app);
 
-app.listen(3000, () => {
+app.listen(port, () => {
   console.log("Server is running on port 3000");
 });
+
