@@ -8,12 +8,32 @@ datasource db {
 }
 
 model notes {
+  title     String
   text      String
-  id        String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  completed Boolean @default(false)
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  completed Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
+  users     users?   @relation(fields: [usersId], references: [id])
+  usersId   String?  @db.Uuid
 }
 
-// Steps to update the schema:
-// 1. npx prisma db pull
-// 2. Run prisma generate 
-// 3. Run prisma db push
+model users {
+  id            String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  email         String       @unique
+  password      String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  notes         notes[]
+  userDetails   userDetails?
+  userDetailsId String?      @db.Uuid
+}
+
+model userDetails {
+  id        String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  firstName String
+  lastName  String
+  users     users  @relation(fields: [usersId], references: [id])
+  usersId   String @unique @db.Uuid
+}

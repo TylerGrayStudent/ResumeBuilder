@@ -7,35 +7,10 @@ import { getClient } from "../prisma/client";
 
 const router = Router();
 
-// Swagger definition
-/**
- * @swagger
- * /notes/{id}:
- *   get:
- *     summary: Get a note by ID
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         description: The ID of the note to retrieve
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: The note
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Note'
- *       404:
- *         description: Note not found
- *       500:
- *         description: Error retrieving notes
- */
 router.get("/:id", async (req: Request<GetByIdRequest>, res: Response) => {
   let client: PrismaClient;
   try {
-    client = await getClient();
+    client = getClient();
     const id = req.params.id;
     const note = await client.notes.findUnique({
       where: { Id: id },
@@ -53,4 +28,3 @@ router.get("/:id", async (req: Request<GetByIdRequest>, res: Response) => {
 });
 
 export default router;
-

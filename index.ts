@@ -2,6 +2,7 @@ import type { Request, Response } from "express";
 import express from "express";
 import notesRoute from "./notes/routes";
 import { setupSwagger } from "./swagger";
+import userRoutes from "./users/routes";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.get("/", (_: Request, res: Response) => {
 });
 
 app.use("/notes", notesRoute);
+app.use("/users", userRoutes);
 
 // Swagger
 setupSwagger(app);
@@ -20,4 +22,3 @@ setupSwagger(app);
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
-
